@@ -19,7 +19,7 @@ Future<String> task2() async {
   Duration threeSeconds = Duration(seconds: 3);
   // sleep(threeSeconds);
   String result;
-  Future.delayed(threeSeconds, () {
+  await Future.delayed(threeSeconds, () {
     result = 'task 2 data';
     print('Task 2 complete');
   });
