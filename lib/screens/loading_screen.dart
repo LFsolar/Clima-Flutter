@@ -15,33 +15,46 @@ class _LoadingScreenState extends State<LoadingScreen> {
   }
 
   Future<void> getLocation() async {
-    LocationPermission permission = await Geolocator.requestPermission();
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.low);
-    print(position);
+    // throw example. throws a specific e to catch
+    // void somethingThatExpectsLessThan10(int n) {
+    //   if (n > 10) {
+    //     throw 'n is greater than 10, n should always be less than 10';
+    //   }
+    // }
+    //
+    // try {
+    //   somethingThatExpectsLessThan10(12);
+    // } catch (e) {
+    //   print(e);
+    // }
+
+    try {
+      LocationPermission permission = await Geolocator.requestPermission();
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.low);
+      print(position);
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     // try-catch example. if try fails, then catch renders with default value
-    String myMargin = 'abc';
-    try {
-      double myMarginAsADouble = double.parse(myMargin);
-      return Scaffold(
-        body: Container(
-          margin: EdgeInsets.all(myMarginAsADouble),
-          color: Colors.red,
-        ),
-      );
-    } catch (e) {
-      print(e);
-      return Scaffold(
-        body: Container(
-          margin: EdgeInsets.all(20),
-          color: Colors.red,
-        ),
-      );
-    }
-    // return Scaffold();
+    // String myMargin = 'abc';
+    // double myMarginAsADouble;
+    // try {
+    //   myMarginAsADouble = double.parse(myMargin);
+    // } catch (e) {
+    //   print(e);
+    // }
+    // return Scaffold(
+    //   body: Container(
+    //     margin: EdgeInsets.all(myMarginAsADouble ?? 30),
+    //     color: Colors.red,
+    //   ),
+    // );
+
+    return Scaffold();
   }
 }
