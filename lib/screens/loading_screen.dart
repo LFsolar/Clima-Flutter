@@ -24,7 +24,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
   @override
   Widget build(BuildContext context) {
     // try-catch example. if try fails, then catch renders with default value
-    String myMargin = '20';
+    String myMargin = 'abc';
     try {
       double myMarginAsADouble = double.parse(myMargin);
       return Scaffold(
@@ -35,6 +35,12 @@ class _LoadingScreenState extends State<LoadingScreen> {
       );
     } catch (e) {
       print(e);
+      return Scaffold(
+        body: Container(
+          margin: EdgeInsets.all(20),
+          color: Colors.red,
+        ),
+      );
     }
     // return Scaffold();
   }
