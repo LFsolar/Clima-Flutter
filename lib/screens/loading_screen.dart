@@ -1,9 +1,13 @@
+import 'package:clima/services/networking.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert'; // for decoding json
+import '../utilities/keys.dart' as Keys;
 
 import '../services/location.dart';
+
+const apiKey = Keys.apiKey;
+
+// const apiKey = '2f569932d24535d47c70d6c51537ced9';
 
 class LoadingScreen extends StatefulWidget {
   @override
@@ -11,14 +15,17 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
+  double lat;
+  double long;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    getLocation();
+    getLocationData();
   }
 
-  Future<void> getLocation() async {
+  Future<void> getLocationData() async {
     // throw example. throws a specific e to catch
     // void somethingThatExpectsLessThan10(int n) {
     //   if (n > 10) {
@@ -30,35 +37,20 @@ class _LoadingScreenState extends State<LoadingScreen> {
     //   somethingThatExpectsLessThan10(12);
     // } catch (e) {
     //   print(e);
-    // }
+    //
 
     try {
       Location location = Location();
       await location.getCurrentLocation();
-      print('lat: ' + location.lat.toString());
-      print('long:' + location.long.toString());
+      lat = location.lat;
+      long = location.long;
+
+      NetworkHelper networkHelper = NetworkHelper(
+          'https://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$long&appid=$apiKey');
+
+      var weatherData = await networkHelper.getData();
     } catch (e) {
       print(e);
-    }
-  }
-
-  void getData() async {
-    http.Response response = await http.get(Uri.parse(
-        'https://samples.openweathermap.org/data/2.5/weather?lat=35&lon=139&appid=b6907d289e10d714a6e88b30761fae22'));
-    if (response.statusCode == 200) {
-      String data = response.body;
-
-      var decodedData = jsonDecode(data);
-      int weatherId = decodedData['weather'][0]['id'];
-      print('weatherId: ' + weatherId.toString());
-
-      double temp = decodedData['main']['temp'];
-      print('temp: ' + temp.toString());
-
-      String cityName = decodedData['name'];
-      print('cityName: ' + cityName);
-    } else {
-      print(response.statusCode);
     }
   }
 
@@ -78,7 +70,6 @@ class _LoadingScreenState extends State<LoadingScreen> {
     //     color: Colors.red,
     //   ),
     // );
-    getData();
     return Scaffold();
   }
 }
