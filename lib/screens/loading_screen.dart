@@ -1,8 +1,9 @@
+import 'package:clima/screens/location_screen.dart';
 import 'package:clima/services/networking.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import '../utilities/keys.dart' as Keys;
-
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../services/location.dart';
 
 const apiKey = Keys.apiKey;
@@ -49,6 +50,11 @@ class _LoadingScreenState extends State<LoadingScreen> {
           'https://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$long&appid=$apiKey');
 
       var weatherData = await networkHelper.getData();
+
+      // open location screen
+      Navigator.push(context, MaterialPageRoute(builder: (context) {
+        return LocationScreen();
+      }));
     } catch (e) {
       print(e);
     }
@@ -56,20 +62,13 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // try-catch example. if try fails, then catch renders with default value
-    // String myMargin = 'abc';
-    // double myMarginAsADouble;
-    // try {
-    //   myMarginAsADouble = double.parse(myMargin);
-    // } catch (e) {
-    //   print(e);
-    // }
-    // return Scaffold(
-    //   body: Container(
-    //     margin: EdgeInsets.all(myMarginAsADouble ?? 30),
-    //     color: Colors.red,
-    //   ),
-    // );
-    return Scaffold();
+    return Scaffold(
+      body: Center(
+        child: SpinKitDoubleBounce(
+          color: Colors.white,
+          size: 100,
+        ),
+      ),
+    );
   }
 }
