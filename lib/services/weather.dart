@@ -19,7 +19,9 @@ class WeatherModel {
     }
   }
 
-  String getMessage(int temp) {
+  String getMessage(int tempF) {
+    // convert to C
+    var temp = (tempF * 9 / 5) + 32;
     if (temp > 25) {
       return 'It\'s 🍦 time';
     } else if (temp > 20) {
