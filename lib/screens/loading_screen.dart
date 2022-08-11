@@ -1,12 +1,10 @@
 import 'package:clima/screens/location_screen.dart';
 import 'package:clima/services/networking.dart';
+import 'package:clima/services/weather.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import '../utilities/keys.dart' as Keys;
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../services/location.dart';
-
-const apiKey = Keys.apiKey;
 
 // const apiKey = '2f569932d24535d47c70d6c51537ced9';
 
@@ -38,14 +36,8 @@ class _LoadingScreenState extends State<LoadingScreen> {
     //
 
     try {
-      Location location = Location();
-      await location.getCurrentLocation();
-
-      NetworkHelper networkHelper = NetworkHelper(
-          'https://api.openweathermap.org/data/2.5/weather?lat=${location.lat}&lon=${location.long}&appid=$apiKey&units=imperial');
-
-      var weatherData = await networkHelper.getData();
-
+      WeatherModel weatherModel = WeatherModel();
+      var weatherData = await weatherModel.getLocationWeather();
       // open location screen
       Navigator.push(context, MaterialPageRoute(builder: (context) {
         return LocationScreen(
